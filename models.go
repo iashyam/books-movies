@@ -21,6 +21,7 @@ type Book struct {
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Pages     int       `json:"pages"`
+	Rating    int       `json:"rating"`
 	Genre     Genre     `json:"genre"`
 }
 
@@ -30,6 +31,7 @@ type Movie struct {
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Length    int       `json:"length"`
+	Rating    int       `json:"rating"`
 	Genre     Genre     `json:"genre"`
 }
 
@@ -39,5 +41,6 @@ type Show struct {
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Seasons   int       `json:"seasons"`
+	Rating    int       `json:"rating"`
 	Genre     Genre     `json:"genre"`
 }
