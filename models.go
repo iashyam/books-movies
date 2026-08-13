@@ -15,13 +15,20 @@ const (
 	CotemporaryFiction
 )
 
+type BookList struct {
+	Books []Book `json:"books"`
+}
+
+type MoviesList struct {
+	Movies []Movie `json:"movies"`
+}
+
 type Book struct {
 	Title     string    `json:"title"`
 	Author    string    `json:"author"`
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Pages     int       `json:"pages"`
-	Rating    int       `json:"rating"`
 	Genre     Genre     `json:"genre"`
 }
 
@@ -31,7 +38,6 @@ type Movie struct {
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Length    int       `json:"length"`
-	Rating    int       `json:"rating"`
 	Genre     Genre     `json:"genre"`
 }
 
@@ -41,6 +47,5 @@ type Show struct {
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Seasons   int       `json:"seasons"`
-	Rating    int       `json:"rating"`
 	Genre     Genre     `json:"genre"`
 }

@@ -1,9 +1,7 @@
 package main
 
-import (
-	"fmt"
-)
-
 func main() {
-	fmt.Println("Hello world")
+	PORT := ":8080"
+	r := setupRouter()
+	r.Run(PORT)
 }

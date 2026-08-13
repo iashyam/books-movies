@@ -43,39 +43,3 @@ func LoadDB(ctx context.Context) (*mongo.Database, error) {
 	return DB, nil
 
 }
-
-func GetDraft(ctx context.Context) ([]Draft, error) {
-	var result []Draft
-	db, err := LoadDB(ctx)
-	if err != nil {
-		return result, err
-	}
-
-	drafts := db.Collection("drafts")
-	cur, err := drafts.Find(context.TODO(), bson.D{})
-	if err != nil {
-		return result, err
-	}
-	defer cur.Close(context.TODO())
-	err = cur.All(context.TODO(), &result)
-	if err != nil {
-		return result, err
-	}
-	return result, nil
-}
-
-// function to insert a draft into the database
-func InsertDraft(ctx context.Context, draft Draft) error {
-	db, err := LoadDB(ctx)
-	if err != nil {
-		return err
-	}
-
-	drafts := db.Collection("drafts")
-	_, err = drafts.InsertOne(context.TODO(), draft)
-	if err != nil {
-		return err
-	}
-	fmt.Println("Document inserted successfully")
-	return nil
-}
