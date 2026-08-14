@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 func (env *HandlerEnv) GetBooksHandler(c *gin.Context) {
@@ -43,4 +45,21 @@ func (env *HandlerEnv) CreateBooksHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{"message": "Book created successfully"})
+}
+
+func (env *HandlerEnv) CreateBookByIDHandler(c *gin.Context) {
+	var book Book
+	id := c.Param("id")
+	books := env.db.Collection("books")
+	res := books.FindOne(c.Request.Context(), bson.M{"_id": id})
+	if err := res.Decode(&book); err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			log.Printf("Book with ID %s not found", id)
+			c.JSON(404, gin.H{"error": "Book not found"})
+			return
+		}
+		log.Printf("Error decoding book with ID %s: %v", id, err)
+		c.JSON(500, gin.H{"error": "Error decoding book"})
+	}
+	c.JSON(200, book)
 }
