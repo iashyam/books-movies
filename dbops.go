@@ -2,20 +2,19 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"os"
 	"time"
 )
 
-type Draft struct {
-	Text      string    `json:"text"`
-	Author    string    `json:"author"`
-	CreatedAT time.Time `json:"createdAt"`
-	UpdatedAT time.Time `json:"updatedAt"`
+type HandlerEnv struct {
+	db *mongo.Database
+}
+
+func NewHandlerEnv(db *mongo.Database) *HandlerEnv {
+	return &HandlerEnv{db: db}
 }
 
 var Client *mongo.Client
