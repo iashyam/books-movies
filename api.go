@@ -25,8 +25,10 @@ func setupRouter() *gin.Engine {
 
 	// books handlers
 	r.GET("/books", env.GetBooksHandler)
-	r.GET("/books/:id", env.GetBooksHandler)
+	r.GET("/books/:id", env.GetBookByIDHandler)
 	r.POST("/books", env.CreateBooksHandler)
+	r.DELETE("/books/:id", env.DeleteBookByIDHandler)
+	r.PATCH("/books/:id", env.PatchBookByIDHandler)
 
 	// // movies handlers
 	// r.GET("/movies", GetMoviesHandler)

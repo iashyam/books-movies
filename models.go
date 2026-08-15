@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"time"
+)
 
 type Genre int
 
@@ -13,39 +16,45 @@ const (
 	Classic
 	MagicRealism
 	CotemporaryFiction
+	Fantasy
 )
 
 type BookList struct {
-	Books []Book `json:"books"`
+	ID    bson.ObjectID `bson:"_id,omitempty" json:"id"`
+	Books []Book        `bson:"books" json:"books"`
 }
 
 type MoviesList struct {
-	Movies []Movie `json:"movies"`
+	ID     bson.ObjectID `bson:"_id,omitempty" json:"id"`
+	Movies []Movie       `bson:"movies" json:"movies"`
 }
 
 type Book struct {
-	Title     string    `json:"title"`
-	Author    string    `json:"author"`
-	StartDate time.Time `json:"startDate"`
-	EndDate   time.Time `json:"endDate"`
-	Pages     int       `json:"pages"`
-	Genre     Genre     `json:"genre"`
+	ID        bson.ObjectID `bson:"_id,omitempty" json:"id"`
+	Title     string        `bson:"title" json:"title"`
+	Author    string        `bson:"author" json:"author"`
+	StartDate time.Time     `bson:"startDate" json:"startDate"`
+	EndDate   time.Time     `bson:"endDate" json:"endDate"`
+	Pages     int           `bson:"pages" json:"pages"`
+	Genre     Genre         `bson:"genre" json:"genre"`
 }
 
 type Movie struct {
-	Title     string    `json:"title"`
-	Director  string    `json:"director"`
-	StartDate time.Time `json:"startDate"`
-	EndDate   time.Time `json:"endDate"`
-	Length    int       `json:"length"`
-	Genre     Genre     `json:"genre"`
+	ID        bson.ObjectID `bson:"_id,omitempty" json:"id"`
+	Title     string        `bson:"title" json:"title"`
+	Director  string        `bson:"director" json:"director"`
+	StartDate time.Time     `bson:"startDate" json:"startDate"`
+	EndDate   time.Time     `bson:"endDate" json:"endDate"`
+	Length    int           `bson:"length" json:"length"`
+	Genre     Genre         `bson:"genre" json:"genre"`
 }
 
 type Show struct {
-	Title     string    `json:"title"`
-	Director  string    `json:"director"`
-	StartDate time.Time `json:"startDate"`
-	EndDate   time.Time `json:"endDate"`
-	Seasons   int       `json:"seasons"`
-	Genre     Genre     `json:"genre"`
+	ID        bson.ObjectID `bson:"_id,omitempty" json:"id"`
+	Title     string        `bson:"title" json:"title"`
+	Director  string        `bson:"director" json:"director"`
+	StartDate time.Time     `bson:"startDate" json:"startDate"`
+	EndDate   time.Time     `bson:"endDate" json:"endDate"`
+	Seasons   int           `bson:"seasons" json:"seasons"`
+	Genre     Genre         `bson:"genre" json:"genre"`
 }
