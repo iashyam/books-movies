@@ -24,21 +24,28 @@ func setupRouter() *gin.Engine {
 	})
 
 	// books handlers
-	r.GET("/books", env.GetBooksHandler)
-	r.GET("/books/:id", env.GetBookByIDHandler)
-	r.POST("/books", env.CreateBooksHandler)
-	r.DELETE("/books/:id", env.DeleteBookByIDHandler)
-	r.PATCH("/books/:id", env.PatchBookByIDHandler)
+	bookHandler := NewContent[Book](env, "books")
+	r.GET("/books", bookHandler.GetAll())
+	r.GET("/books/:id", bookHandler.GetByID())
+	r.POST("/books", bookHandler.Create())
+	r.DELETE("/books/:id", bookHandler.Delete())
+	r.PATCH("/books/:id", bookHandler.Update())
 
-	// // movies handlers
-	// r.GET("/movies", GetMoviesHandler)
-	// r.GET("/movies/:id", GetMoviesHandler)
-	// r.POST("/movies", CreateMoviesHandler)
-	//
-	// // shows handlers
-	// r.GET("/shows", GetShowsHandler)
-	// r.GET("/shows/:id", GetShowsHandler)
-	// r.POST("/shows", CreateShowsHandler)
+	// movies handlers
+	movieHandler := NewContent[Movie](env, "movies")
+	r.GET("/movies", movieHandler.GetAll())
+	r.GET("/movies/:id", movieHandler.GetByID())
+	r.POST("/movies", movieHandler.Create())
+	r.DELETE("/movies/:id", movieHandler.Delete())
+	r.PATCH("/movies/:id", movieHandler.Update())
+
+	// shows handlers
+	showHandler := NewContent[Show](env, "shows")
+	r.GET("/shows", showHandler.GetAll())
+	r.GET("/shows/:id", showHandler.GetByID())
+	r.POST("/shows", showHandler.Create())
+	r.DELETE("/shows/:id", showHandler.Delete())
+	r.PATCH("/shows/:id", showHandler.Update())
 
 	return r
 }

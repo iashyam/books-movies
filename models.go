@@ -10,6 +10,11 @@ type Item interface {
 	getID() bson.ObjectID
 }
 
+type Document interface {
+	GetID() bson.ObjectID
+	SetID(bson.ObjectID)
+}
+
 type Genre int
 
 const (
@@ -66,3 +71,12 @@ type Show struct {
 	Status    string        `bson:"status" json:"status"`
 	Genre     Genre         `bson:"genre" json:"genre"`
 }
+
+func (b Book) GetID() bson.ObjectID   { return b.ID }
+func (b Book) SetID(id bson.ObjectID) { b.ID = id }
+
+func (m Movie) GetID() bson.ObjectID   { return m.ID }
+func (m Movie) SetID(id bson.ObjectID) { m.ID = id }
+
+func (s Show) GetID() bson.ObjectID   { return s.ID }
+func (s Show) SetID(id bson.ObjectID) { s.ID = id }

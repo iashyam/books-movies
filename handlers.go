@@ -9,130 +9,131 @@ import (
 	"net/http"
 )
 
-func (env *HandlerEnv) GetBooksHandler(c *gin.Context) {
-	var books []Book
-
-	cur, err := env.db.Collection("books").Find(c.Request.Context(), bson.M{})
-	if err != nil {
-		log.Printf("Some error in the finding collection in db: %v", err)
-		c.JSON(500, gin.H{"error": "Failed to find books in database"})
-		return
-	}
-
-	defer cur.Close(c.Request.Context())
-	err = cur.All(c.Request.Context(), &books)
-	if err != nil {
-		log.Printf("Failed to load database: %v", err)
-		c.JSON(500, gin.H{"error": "Failed to load books from database"})
-		return
-	}
-
-	c.JSON(200, books)
+type Content[T Document] struct {
+	collectionName string
+	env            *HandlerEnv
 }
 
-func (env *HandlerEnv) CreateBooksHandler(c *gin.Context) {
-	var book Book
-	if err := c.ShouldBindJSON(&book); err != nil {
-		log.Printf("Failed to bind JSON: %v", err)
-		c.JSON(500, gin.H{"error": "Failed to bind JSON."})
-		return
-	}
-	books := env.db.Collection("books")
-	result, err := books.InsertOne(c.Request.Context(), book)
-	if err != nil {
-		log.Printf("Error in inserting the document, %v", err)
-		c.JSON(500, gin.H{"error": "Error in inserting the document"})
-		return
-	}
-	book.ID = result.InsertedID.(bson.ObjectID)
-	c.JSON(200, gin.H{"message": "Book created successfully"})
+func NewContent[T Document](env *HandlerEnv, collectionName string) *Content[T] {
+	return &Content[T]{collectionName: collectionName, env: env}
 }
 
-func (env *HandlerEnv) GetBookByIDHandler(c *gin.Context) {
-	var book Book
-	id := c.Param("id")
-	objectID, err := bson.ObjectIDFromHex(id)
-	if err != nil {
-		log.Printf("Invalid ID format: %v", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
-	filter := bson.M{"_id": objectID}
-	books := env.db.Collection("books")
-	res := books.FindOne(c.Request.Context(), filter)
-	if err := res.Decode(&book); err != nil {
-		if errors.Is(err, mongo.ErrNoDocuments) {
-			log.Printf("Book with ID %s not found", id)
-			c.JSON(404, gin.H{"error": "Book not found"})
+func (content *Content[T]) GetAll() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var items []T
+		cur, err := content.env.db.Collection(content.collectionName).Find(c.Request.Context(), bson.M{})
+		if err != nil {
+			log.Printf("Error finding in %s: %v", content.collectionName, err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch items"})
 			return
 		}
-		log.Printf("Error decoding book with ID %s: %v", id, err)
-		c.JSON(500, gin.H{"error": "Error decoding book"})
-	}
-	c.JSON(200, book)
-}
+		defer cur.Close(c.Request.Context())
 
-func (env *HandlerEnv) DeleteBookByIDHandler(c *gin.Context) {
-	id := c.Param("id")
-	objectID, err := bson.ObjectIDFromHex(id)
-	if err != nil {
-		log.Printf("Invalid ID format: %v", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
-	books := env.db.Collection("books")
-	filter := bson.M{"_id": objectID}
-	//first check if the book exists
-	bookExists := books.FindOne(c.Request.Context(), filter)
-	if err := bookExists.Decode(&Book{}); err != nil {
-		if errors.Is(err, mongo.ErrNoDocuments) {
-			c.JSON(404, gin.H{"error": "Book not found"})
+		if err = cur.All(c.Request.Context(), &items); err != nil {
+			log.Printf("Error decoding %s: %v", content.collectionName, err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load items"})
 			return
 		}
+		c.JSON(http.StatusOK, items)
 	}
-	res, err := books.DeleteOne(c.Request.Context(), filter)
-	if err != nil {
-		log.Printf("Error deleting book with ID %s: %v", id, err)
-		c.JSON(500, gin.H{"error": "Error deleting book"})
-		return
-	}
-	c.JSON(200, gin.H{"message": "Book deleted successfully", "deletedCount": res.DeletedCount})
 }
 
-func (env *HandlerEnv) PatchBookByIDHandler(c *gin.Context) {
-	id := c.Param("id")
-	objectID, err := bson.ObjectIDFromHex(id)
-	if err != nil {
-		log.Printf("Invalid ID format: %v", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
-	var book Book
-	books := env.db.Collection("books")
-
-	err = c.ShouldBindJSON(&book)
-	if err != nil {
-		c.JSON(400, gin.H{"error": "Invalid request body"})
-		return
-	}
-	filter := bson.M{"_id": objectID}
-	updateDoc := bson.M{"$set": book}
-
-	//first check if the book exists
-	bookExists := books.FindOne(c.Request.Context(), filter)
-	if err := bookExists.Decode(&Book{}); err != nil {
-		if errors.Is(err, mongo.ErrNoDocuments) {
-			c.JSON(404, gin.H{"error": "Book not found"})
+func (content *Content[T]) Create() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var item T
+		if err := c.ShouldBindJSON(&item); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 			return
 		}
-	}
 
-	//update the book data
-	result, err := books.UpdateOne(c.Request.Context(), filter, updateDoc)
-	if err != nil || result.ModifiedCount == 0 {
-		c.JSON(500, gin.H{"error": "Failed to update book"})
-		return
-	}
+		result, err := content.env.db.Collection(content.collectionName).InsertOne(c.Request.Context(), item)
+		if err != nil {
+			log.Printf("Error inserting into %s: %v", content.collectionName, err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create item"})
+			return
+		}
 
-	c.JSON(200, gin.H{"message": "Book updated successfully", "modifiedCount": result.ModifiedCount})
+		c.JSON(http.StatusCreated, gin.H{"message": "Item created successfully", "id": result.InsertedID})
+	}
+}
+
+func (content *Content[T]) GetByID() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		objectID, err := bson.ObjectIDFromHex(idStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+			return
+		}
+
+		var item T
+		err = content.env.db.Collection(content.collectionName).FindOne(c.Request.Context(), bson.M{"_id": objectID}).Decode(&item)
+		if err != nil {
+			if errors.Is(err, mongo.ErrNoDocuments) {
+				c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+				return
+			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching item"})
+			return
+		}
+		c.JSON(http.StatusOK, item)
+	}
+}
+
+func (content *Content[T]) Delete() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		objectID, err := bson.ObjectIDFromHex(idStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+			return
+		}
+
+		result, err := content.env.db.Collection(content.collectionName).DeleteOne(c.Request.Context(), bson.M{"_id": objectID})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete item"})
+			return
+		}
+
+		if result.DeletedCount == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Item deleted successfully"})
+	}
+}
+
+func (content *Content[T]) Update() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		objectID, err := bson.ObjectIDFromHex(idStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+			return
+		}
+
+		var item T
+		if err := c.ShouldBindJSON(&item); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			return
+		}
+
+		result, err := content.env.db.Collection(content.collectionName).UpdateOne(
+			c.Request.Context(),
+			bson.M{"_id": objectID},
+			bson.M{"$set": item},
+		)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update item"})
+			return
+		}
+
+		if result.MatchedCount == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Item updated successfully"})
+	}
 }
