@@ -137,3 +137,39 @@ func (content *Content[T]) Update() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"message": "Item updated successfully"})
 	}
 }
+
+func (content *Content[T]) ChangeStatus() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		objectID, err := bson.ObjectIDFromHex(idStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+			return
+		}
+
+		var statusUpdate struct {
+			Status string `json:"status" binding:"required"`
+		}
+		if err := c.ShouldBindJSON(&statusUpdate); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			return
+		}
+
+		result, err := content.env.db.Collection(content.collectionName).UpdateOne(
+			c.Request.Context(),
+			bson.M{"_id": objectID},
+			bson.M{"$set": bson.M{"status": statusUpdate.Status}},
+		)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update status"})
+			return
+		}
+
+		if result.MatchedCount == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Status updated successfully"})
+	}
+}

@@ -29,6 +29,30 @@ const (
 	Fantasy
 )
 
+type BookStatus string
+
+const (
+	BookToRead           BookStatus = "toRead"
+	BookCurrentlyReading BookStatus = "currentlyReading"
+	BookRead             BookStatus = "read"
+)
+
+type MovieStatus string
+
+const (
+	MovieWatchlist         MovieStatus = "watchlist"
+	MovieCurrentlyWatching MovieStatus = "currentlyWatching"
+	MovieWatched           MovieStatus = "watched"
+)
+
+type ShowStatus string
+
+const (
+	ShowWatchlist         ShowStatus = "watchlist"
+	ShowCurrentlyWatching ShowStatus = "currentlyWatching"
+	ShowWatched           ShowStatus = "watched"
+)
+
 type BookList struct {
 	ID    bson.ObjectID `bson:"_id,omitempty" json:"id"`
 	Books []Book        `bson:"books" json:"books"`
@@ -45,7 +69,7 @@ type Book struct {
 	Author    string        `bson:"author" json:"author"`
 	StartDate time.Time     `bson:"startDate" json:"startDate"`
 	EndDate   time.Time     `bson:"endDate" json:"endDate"`
-	Status    string        `bson:"status" json:"status"`
+	Status    BookStatus    `bson:"status" json:"status"`
 	Pages     int           `bson:"pages" json:"pages"`
 	Genre     Genre         `bson:"genre" json:"genre"`
 }
@@ -56,7 +80,7 @@ type Movie struct {
 	Director  string        `bson:"director" json:"director"`
 	StartDate time.Time     `bson:"startDate" json:"startDate"`
 	EndDate   time.Time     `bson:"endDate" json:"endDate"`
-	Status    string        `bson:"status" json:"status"`
+	Status    MovieStatus   `bson:"status" json:"status"`
 	Length    int           `bson:"length" json:"length"`
 	Genre     Genre         `bson:"genre" json:"genre"`
 }
@@ -68,7 +92,7 @@ type Show struct {
 	StartDate time.Time     `bson:"startDate" json:"startDate"`
 	EndDate   time.Time     `bson:"endDate" json:"endDate"`
 	Seasons   int           `bson:"seasons" json:"seasons"`
-	Status    string        `bson:"status" json:"status"`
+	Status    ShowStatus    `bson:"status" json:"status"`
 	Genre     Genre         `bson:"genre" json:"genre"`
 }
 

@@ -30,6 +30,7 @@ func setupRouter() *gin.Engine {
 	r.POST("/books", bookHandler.Create())
 	r.DELETE("/books/:id", bookHandler.Delete())
 	r.PATCH("/books/:id", bookHandler.Update())
+	r.PATCH("/books/:id/status", bookHandler.ChangeStatus())
 
 	// movies handlers
 	movieHandler := NewContent[Movie](env, "movies")
@@ -38,6 +39,7 @@ func setupRouter() *gin.Engine {
 	r.POST("/movies", movieHandler.Create())
 	r.DELETE("/movies/:id", movieHandler.Delete())
 	r.PATCH("/movies/:id", movieHandler.Update())
+	r.PATCH("/movies/:id/status", movieHandler.ChangeStatus())
 
 	// shows handlers
 	showHandler := NewContent[Show](env, "shows")
@@ -46,6 +48,7 @@ func setupRouter() *gin.Engine {
 	r.POST("/shows", showHandler.Create())
 	r.DELETE("/shows/:id", showHandler.Delete())
 	r.PATCH("/shows/:id", showHandler.Update())
+	r.PATCH("/shows/:id/status", showHandler.ChangeStatus())
 
 	return r
 }
