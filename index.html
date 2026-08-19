@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books & Movies Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #222;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #0052a3;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-status {
+            background: #28a745;
+            color: white;
+            font-size: 12px;
+            padding: 6px 10px;
+            margin-right: 5px;
+        }
+
+        .btn-status:hover {
+            background: #218838;
+        }
+
+        .item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #222;
+        }
+
+        .item-meta {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-toRead, .status-watchlist {
+            background: #e2f0ff;
+            color: #0066cc;
+        }
+
+        .status-currentlyReading, .status-currentlyWatching {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-read, .status-watched {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .no-items {
+            padding: 40px 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .content-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Books & Movies Tracker</h1>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('books')">Books</button>
+            <button class="tab-btn" onclick="switchTab('movies')">Movies</button>
+            <button class="tab-btn" onclick="switchTab('shows')">Shows</button>
+        </div>
+
+        <!-- Books Tab -->
+        <div id="books" class="tab-content active">
+            <div class="content-section">
+                <div class="form-section">
+                    <h2>Add Book</h2>
+                    <div class="error" id="booksError"></div>
+                    <form onsubmit="addBook(event)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="bookTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Author</label>
+                            <input type="text" id="bookAuthor" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Genre</label>
+                            <select id="bookGenre" required>
+                                <option value="">Select genre</option>
+                                <option value="anyBook">Any Book</option>
+                                <option value="travel">Travel</option>
+                                <option value="thriller">Thriller</option>
+                                <option value="scienceFiction">Science Fiction</option>
+                                <option value="popularScience">Popular Science</option>
+                                <option value="classic">Classic</option>
+                                <option value="magicRealism">Magic Realism</option>
+                                <option value="contemporaryFiction">Contemporary Fiction</option>
+                                <option value="fantasy">Fantasy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Pages</label>
+                            <input type="number" id="bookPages" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="bookStatus" required>
+                                <option value="toRead">To Read</option>
+                                <option value="currentlyReading">Currently Reading</option>
+                                <option value="read">Read</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="datetime-local" id="bookStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="datetime-local" id="bookEndDate">
+                        </div>
+                        <button type="submit" class="btn-primary">Add Book</button>
+                    </form>
+                </div>
+                <div class="list-section">
+                    <div id="booksList" class="no-items">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movies Tab -->
+        <div id="movies" class="tab-content">
+            <div class="content-section">
+                <div class="form-section">
+                    <h2>Add Movie</h2>
+                    <div class="error" id="moviesError"></div>
+                    <form onsubmit="addMovie(event)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="movieTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Director</label>
+                            <input type="text" id="movieDirector" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Genre</label>
+                            <select id="movieGenre" required>
+                                <option value="">Select genre</option>
+                                <option value="anyBook">Any</option>
+                                <option value="travel">Travel</option>
+                                <option value="thriller">Thriller</option>
+                                <option value="scienceFiction">Science Fiction</option>
+                                <option value="popularScience">Popular Science</option>
+                                <option value="classic">Classic</option>
+                                <option value="magicRealism">Magic Realism</option>
+                                <option value="contemporaryFiction">Contemporary Fiction</option>
+                                <option value="fantasy">Fantasy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Length (minutes)</label>
+                            <input type="number" id="movieLength" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="movieStatus" required>
+                                <option value="watchlist">Watchlist</option>
+                                <option value="currentlyWatching">Currently Watching</option>
+                                <option value="watched">Watched</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="datetime-local" id="movieStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="datetime-local" id="movieEndDate">
+                        </div>
+                        <button type="submit" class="btn-primary">Add Movie</button>
+                    </form>
+                </div>
+                <div class="list-section">
+                    <div id="moviesList" class="no-items">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shows Tab -->
+        <div id="shows" class="tab-content">
+            <div class="content-section">
+                <div class="form-section">
+                    <h2>Add Show</h2>
+                    <div class="error" id="showsError"></div>
+                    <form onsubmit="addShow(event)">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="showTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Director</label>
+                            <input type="text" id="showDirector" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Genre</label>
+                            <select id="showGenre" required>
+                                <option value="">Select genre</option>
+                                <option value="anyBook">Any</option>
+                                <option value="travel">Travel</option>
+                                <option value="thriller">Thriller</option>
+                                <option value="scienceFiction">Science Fiction</option>
+                                <option value="popularScience">Popular Science</option>
+                                <option value="classic">Classic</option>
+                                <option value="magicRealism">Magic Realism</option>
+                                <option value="contemporaryFiction">Contemporary Fiction</option>
+                                <option value="fantasy">Fantasy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Seasons</label>
+                            <input type="number" id="showSeasons" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="showStatus" required>
+                                <option value="watchlist">Watchlist</option>
+                                <option value="currentlyWatching">Currently Watching</option>
+                                <option value="watched">Watched</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="datetime-local" id="showStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="datetime-local" id="showEndDate">
+                        </div>
+                        <button type="submit" class="btn-primary">Add Show</button>
+                    </form>
+                </div>
+                <div class="list-section">
+                    <div id="showsList" class="no-items">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+            loadItems(tab);
+        }
+
+        async function loadItems(type) {
+            try {
+                const response = await fetch(`${API_BASE}/${type}`);
+                if (!response.ok) throw new Error('Failed to load');
+                const items = await response.json();
+                renderItems(type, items || []);
+            } catch (err) {
+                document.getElementById(`${type}List`).innerHTML = '<div class="no-items">Error loading items</div>';
+            }
+        }
+
+        function renderItems(type, items) {
+            const container = document.getElementById(`${type}List`);
+            if (items.length === 0) {
+                container.innerHTML = '<div class="no-items">No items yet</div>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="item">
+                    <div class="item-info">
+                        <h3>${item.title}</h3>
+                        <div class="item-meta">
+                            ${type === 'books' ? `By ${item.author}` : `Directed by ${item.director}`}
+                        </div>
+                        <div class="item-meta">
+                            ${type === 'books' ? `${item.pages} pages` : type === 'movies' ? `${item.length} min` : `${item.seasons} seasons`}
+                        </div>
+                        <span class="status-badge status-${item.status}">${formatStatus(item.status)}</span>
+                    </div>
+                    <div class="item-actions">
+                        <select onchange="changeStatus('${type}', '${item.id}', this.value)" style="font-size: 12px; padding: 6px;">
+                            ${getStatusOptions(type, item.status)}
+                        </select>
+                        <button class="btn-danger" onclick="deleteItem('${type}', '${item.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusOptions(type, currentStatus) {
+            const options = {
+                books: [
+                    { value: 'toRead', label: 'To Read' },
+                    { value: 'currentlyReading', label: 'Currently Reading' },
+                    { value: 'read', label: 'Read' }
+                ],
+                movies: [
+                    { value: 'watchlist', label: 'Watchlist' },
+                    { value: 'currentlyWatching', label: 'Currently Watching' },
+                    { value: 'watched', label: 'Watched' }
+                ],
+                shows: [
+                    { value: 'watchlist', label: 'Watchlist' },
+                    { value: 'currentlyWatching', label: 'Currently Watching' },
+                    { value: 'watched', label: 'Watched' }
+                ]
+            };
+
+            return options[type].map(opt =>
+                `<option value="${opt.value}" ${opt.value === currentStatus ? 'selected' : ''}>${opt.label}</option>`
+            ).join('');
+        }
+
+        function formatStatus(status) {
+            const map = {
+                'toRead': 'To Read',
+                'currentlyReading': 'Currently Reading',
+                'read': 'Read',
+                'watchlist': 'Watchlist',
+                'currentlyWatching': 'Currently Watching',
+                'watched': 'Watched'
+            };
+            return map[status] || status;
+        }
+
+        async function changeStatus(type, id, newStatus) {
+            try {
+                const response = await fetch(`${API_BASE}/${type}/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (!response.ok) throw new Error('Failed to update');
+                loadItems(type);
+            } catch (err) {
+                alert('Error updating status');
+            }
+        }
+
+        async function deleteItem(type, id) {
+            if (!confirm('Delete this item?')) return;
+            try {
+                const response = await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error('Failed to delete');
+                loadItems(type);
+            } catch (err) {
+                alert('Error deleting item');
+            }
+        }
+
+        async function addBook(e) {
+            e.preventDefault();
+            const book = {
+                title: document.getElementById('bookTitle').value,
+                author: document.getElementById('bookAuthor').value,
+                genre: document.getElementById('bookGenre').value,
+                pages: parseInt(document.getElementById('bookPages').value),
+                status: document.getElementById('bookStatus').value,
+                startDate: document.getElementById('bookStartDate').value,
+                endDate: document.getElementById('bookEndDate').value
+            };
+            await submitForm('books', book);
+            e.target.reset();
+        }
+
+        async function addMovie(e) {
+            e.preventDefault();
+            const movie = {
+                title: document.getElementById('movieTitle').value,
+                director: document.getElementById('movieDirector').value,
+                genre: document.getElementById('movieGenre').value,
+                length: parseInt(document.getElementById('movieLength').value),
+                status: document.getElementById('movieStatus').value,
+                startDate: document.getElementById('movieStartDate').value,
+                endDate: document.getElementById('movieEndDate').value
+            };
+            await submitForm('movies', movie);
+            e.target.reset();
+        }
+
+        async function addShow(e) {
+            e.preventDefault();
+            const show = {
+                title: document.getElementById('showTitle').value,
+                director: document.getElementById('showDirector').value,
+                genre: document.getElementById('showGenre').value,
+                seasons: parseInt(document.getElementById('showSeasons').value),
+                status: document.getElementById('showStatus').value,
+                startDate: document.getElementById('showStartDate').value,
+                endDate: document.getElementById('showEndDate').value
+            };
+            await submitForm('shows', show);
+            e.target.reset();
+        }
+
+        async function submitForm(type, data) {
+            try {
+                const response = await fetch(`${API_BASE}/${type}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('Failed to create');
+                loadItems(type);
+            } catch (err) {
+                document.getElementById(`${type}Error`).textContent = 'Error adding item';
+                document.getElementById(`${type}Error`).classList.add('show');
+                setTimeout(() => document.getElementById(`${type}Error`).classList.remove('show'), 3000);
+            }
+        }
+
+        // Load books on page load
+        loadItems('books');
+    </script>
+</body>
+</html>
