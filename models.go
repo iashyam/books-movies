@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"time"
 )
@@ -28,6 +30,53 @@ const (
 	CotemporaryFiction
 	Fantasy
 )
+
+var genreStrings = map[Genre]string{
+	AnyBook:            "anyBook",
+	Travel:             "travel",
+	Thriller:           "thriller",
+	ScienceFiction:     "scienceFiction",
+	PopularScience:     "popularScience",
+	Classic:            "classic",
+	MagicRealism:       "magicRealism",
+	CotemporaryFiction: "contemporaryFiction",
+	Fantasy:            "fantasy",
+}
+
+var stringToGenre = map[string]Genre{
+	"anyBook":            AnyBook,
+	"travel":             Travel,
+	"thriller":           Thriller,
+	"scienceFiction":     ScienceFiction,
+	"popularScience":     PopularScience,
+	"classic":            Classic,
+	"magicRealism":       MagicRealism,
+	"contemporaryFiction": CotemporaryFiction,
+	"fantasy":            Fantasy,
+}
+
+func (g Genre) String() string {
+	if s, ok := genreStrings[g]; ok {
+		return s
+	}
+	return "unknown"
+}
+
+func (g Genre) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + g.String() + `"`), nil
+}
+
+func (g *Genre) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	if genre, ok := stringToGenre[s]; ok {
+		*g = genre
+		return nil
+	}
+	return fmt.Errorf("invalid genre: %s", s)
+}
 
 type BookStatus string
 
