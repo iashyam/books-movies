@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-type Item interface {
-	setID(bson.ObjectID)
-	getID() bson.ObjectID
-}
-
 type Document interface {
 	GetID() bson.ObjectID
 	SetID(bson.ObjectID)
@@ -44,15 +39,15 @@ var genreStrings = map[Genre]string{
 }
 
 var stringToGenre = map[string]Genre{
-	"anyBook":            AnyBook,
-	"travel":             Travel,
-	"thriller":           Thriller,
-	"scienceFiction":     ScienceFiction,
-	"popularScience":     PopularScience,
-	"classic":            Classic,
-	"magicRealism":       MagicRealism,
+	"anyBook":             AnyBook,
+	"travel":              Travel,
+	"thriller":            Thriller,
+	"scienceFiction":      ScienceFiction,
+	"popularScience":      PopularScience,
+	"classic":             Classic,
+	"magicRealism":        MagicRealism,
 	"contemporaryFiction": CotemporaryFiction,
-	"fantasy":            Fantasy,
+	"fantasy":             Fantasy,
 }
 
 func (g Genre) String() string {
