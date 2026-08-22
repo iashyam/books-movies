@@ -132,7 +132,7 @@ export function ListPageLayout<T extends Record<string, any>>({
             title: anyRow.title || '',
             director: anyRow.director || '',
             ...(length && { length }),
-            genre: anyRow.genre || 'General',
+            genre: anyRow.genre || 'general',
             status: 'watched',
             endDate: today,
           },
@@ -151,7 +151,7 @@ export function ListPageLayout<T extends Record<string, any>>({
             title: anyRow.title || '',
             director: anyRow.director || '',
             ...(seasons && { seasons }),
-            genre: anyRow.genre || 'General',
+            genre: anyRow.genre || 'general',
             status: 'currentlyWatching',
             startDate: today,
           },
@@ -170,7 +170,7 @@ export function ListPageLayout<T extends Record<string, any>>({
             title: anyRow.title || '',
             director: anyRow.director || '',
             ...(seasons && { seasons }),
-            genre: anyRow.genre || 'General',
+            genre: anyRow.genre || 'general',
             status: 'watched',
             endDate: today,
           },
@@ -189,7 +189,7 @@ export function ListPageLayout<T extends Record<string, any>>({
             title: anyRow.title || '',
             author: anyRow.author || '',
             ...(pages && { pages }),
-            genre: anyRow.genre || 'General',
+            genre: anyRow.genre || 'anyBook',
             status: 'currentlyReading',
             startDate: today,
           },
@@ -208,7 +208,7 @@ export function ListPageLayout<T extends Record<string, any>>({
             title: anyRow.title || '',
             author: anyRow.author || '',
             ...(pages && { pages }),
-            genre: anyRow.genre || 'General',
+            genre: anyRow.genre || 'anyBook',
             status: 'read',
             endDate: today,
           },
@@ -224,7 +224,12 @@ export function ListPageLayout<T extends Record<string, any>>({
     ...col,
     render: (row: T) => {
       if (col.key === 'genre') {
-        return <GenrePill genre={(row as any).genre as Genre} />;
+        return (
+          <GenrePill
+            genre={(row as any).genre as Genre}
+            isWatchGenre={entity.resource === 'movies' || entity.resource === 'shows'}
+          />
+        );
       }
       if (col.key === 'status') {
         const label = entity.statusLabels[(row as any).status];

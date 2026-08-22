@@ -32,3 +32,39 @@ export const GENRE_COLORS: Record<Genre, { bg: string; text: string }> = {
   contemporaryFiction: { bg: 'bg-pink-100', text: 'text-pink-700' },
   fantasy: { bg: 'bg-emerald-100', text: 'text-emerald-700' },
 };
+
+// Movies/shows use their own genre set, independent of books.
+export type WatchGenre =
+  | 'general'
+  | 'action'
+  | 'comedy'
+  | 'drama'
+  | 'horror'
+  | 'thriller'
+  | 'romance'
+  | 'documentary'
+  | 'animation'
+  | 'crime'
+  | 'sciFi'
+  | 'fantasy'
+  | 'mystery'
+  | 'adventure'
+  | 'family';
+
+export const WATCH_GENRE_LABELS: Record<WatchGenre, string> = {
+  general: 'General',
+  action: 'Action',
+  comedy: 'Comedy',
+  drama: 'Drama',
+  horror: 'Horror',
+  thriller: 'Thriller',
+  romance: 'Romance',
+  documentary: 'Documentary',
+  animation: 'Animation',
+  crime: 'Crime',
+  sciFi: 'Science Fiction',
+  fantasy: 'Fantasy',
+  mystery: 'Mystery',
+  adventure: 'Adventure',
+  family: 'Family',
+};

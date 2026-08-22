@@ -73,6 +73,85 @@ func (g *Genre) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("invalid genre: %s", s)
 }
 
+type WatchGenre int
+
+const (
+	General WatchGenre = iota
+	Action
+	Comedy
+	Drama
+	Horror
+	WatchThriller
+	Romance
+	Documentary
+	Animation
+	Crime
+	SciFi
+	WatchFantasy
+	Mystery
+	Adventure
+	Family
+)
+
+var watchGenreStrings = map[WatchGenre]string{
+	General:       "general",
+	Action:        "action",
+	Comedy:        "comedy",
+	Drama:         "drama",
+	Horror:        "horror",
+	WatchThriller: "thriller",
+	Romance:       "romance",
+	Documentary:   "documentary",
+	Animation:     "animation",
+	Crime:         "crime",
+	SciFi:         "sciFi",
+	WatchFantasy:  "fantasy",
+	Mystery:       "mystery",
+	Adventure:     "adventure",
+	Family:        "family",
+}
+
+var stringToWatchGenre = map[string]WatchGenre{
+	"general":     General,
+	"action":      Action,
+	"comedy":      Comedy,
+	"drama":       Drama,
+	"horror":      Horror,
+	"thriller":    WatchThriller,
+	"romance":     Romance,
+	"documentary": Documentary,
+	"animation":   Animation,
+	"crime":       Crime,
+	"sciFi":       SciFi,
+	"fantasy":     WatchFantasy,
+	"mystery":     Mystery,
+	"adventure":   Adventure,
+	"family":      Family,
+}
+
+func (g WatchGenre) String() string {
+	if s, ok := watchGenreStrings[g]; ok {
+		return s
+	}
+	return "unknown"
+}
+
+func (g WatchGenre) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + g.String() + `"`), nil
+}
+
+func (g *WatchGenre) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	if genre, ok := stringToWatchGenre[s]; ok {
+		*g = genre
+		return nil
+	}
+	return fmt.Errorf("invalid genre: %s", s)
+}
+
 type BookStatus string
 
 const (
@@ -126,7 +205,7 @@ type Movie struct {
 	EndDate   time.Time     `bson:"endDate" json:"endDate"`
 	Status    MovieStatus   `bson:"status" json:"status"`
 	Length    int           `bson:"length" json:"length"`
-	Genre     Genre         `bson:"genre" json:"genre"`
+	Genre     WatchGenre    `bson:"genre" json:"genre"`
 }
 
 type Show struct {
@@ -137,7 +216,7 @@ type Show struct {
 	EndDate   time.Time     `bson:"endDate" json:"endDate"`
 	Seasons   int           `bson:"seasons" json:"seasons"`
 	Status    ShowStatus    `bson:"status" json:"status"`
-	Genre     Genre         `bson:"genre" json:"genre"`
+	Genre     WatchGenre    `bson:"genre" json:"genre"`
 }
 
 func (b Book) GetID() bson.ObjectID   { return b.ID }
