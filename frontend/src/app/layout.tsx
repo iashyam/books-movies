@@ -17,7 +17,7 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: "Shyam's Shelf",
-  description: 'Track your books, movies, and shows',
+description: 'List of all the books, movies, and shows I have read or watched.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
