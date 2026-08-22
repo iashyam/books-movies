@@ -9,7 +9,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-playfair);
+  --font-logo: var(--font-logo);
 }
 
 :root {

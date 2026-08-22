@@ -14,7 +14,7 @@ import { StatusPill } from './StatusPill';
 import { RowActionsMenu } from './RowActionsMenu';
 import { AddItemModal } from '@/components/modals/AddItemModal';
 import { ConfirmDeleteModal } from '@/components/modals/ConfirmDeleteModal';
-import { useEntityList } from '@/lib/queries';
+import { useEntityList, useUpdateEntity } from '@/lib/queries';
 import { useAuth } from '@/hooks/useAuth';
 import { PAGE_SIZE } from '@/lib/constants';
 import { Genre } from '@/types/genre';
@@ -32,6 +32,7 @@ export function ListPageLayout<T extends Record<string, any>>({
   const auth = useAuth();
   const { data: items = [], isLoading } = useEntityList(entity.resource);
   const typedItems = useMemo(() => (items as T[]) || [], [items]);
+  const updateMutation = useUpdateEntity(entity.resource);
 
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -45,7 +46,15 @@ export function ListPageLayout<T extends Record<string, any>>({
     let result = [...typedItems];
 
     // Status filter
-    if (statusFilter !== 'all') {
+    if (statusFilter === 'thisYear') {
+      const completedStatus = entity.resource === 'books' ? 'read' : 'watched';
+      const currentYear = new Date().getFullYear();
+      result = result.filter((item: any) => {
+        if (item.status !== completedStatus) return false;
+        const d = new Date(item.endDate);
+        return !isNaN(d.getTime()) && d.getFullYear() === currentYear;
+      });
+    } else if (statusFilter !== 'all') {
       result = result.filter((item) => item.status === statusFilter);
     }
 
@@ -72,6 +81,15 @@ export function ListPageLayout<T extends Record<string, any>>({
     return filtered.slice(start, start + PAGE_SIZE);
   }, [filtered, page]);
 
+  const statusFiltersWithCurrentYear = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    return entity.statusFilters.map((filter) =>
+      filter.value === 'thisYear'
+        ? { ...filter, label: String(currentYear) }
+        : filter
+    );
+  }, [entity.statusFilters]);
+
   const handleAddClick = () => {
     if (!auth.isAuthenticated) {
       // LoginModal is in AvatarMenu, user needs to click avatar first
@@ -91,6 +109,114 @@ export function ListPageLayout<T extends Record<string, any>>({
     if (!auth.isAuthenticated) return;
     const anyItem = item as any;
     setDeleteItem({ id: anyItem.id, title: anyItem.title });
+  };
+
+  const getQuickAction = (row: T): { label: string; onClick: () => void } | null => {
+    const anyRow = row as any;
+    const today = new Date().toISOString();
+
+    // Helper to safely get number value
+    const getNumber = (val: any) => {
+      const num = typeof val === 'string' ? Number(val) : val;
+      return isNaN(num) || num <= 0 ? undefined : num;
+    };
+
+    if (entity.resource === 'movies' && anyRow.status === 'watchlist') {
+      const length = getNumber(anyRow.length);
+
+      return {
+        label: 'Mark as Watched',
+        onClick: () => updateMutation.mutate({
+          id: anyRow.id,
+          data: {
+            title: anyRow.title || '',
+            director: anyRow.director || '',
+            ...(length && { length }),
+            genre: anyRow.genre || 'General',
+            status: 'watched',
+            endDate: today,
+          },
+        }),
+      };
+    }
+
+    if (entity.resource === 'shows' && anyRow.status === 'watchlist') {
+      const seasons = getNumber(anyRow.seasons);
+
+      return {
+        label: 'Start Watching',
+        onClick: () => updateMutation.mutate({
+          id: anyRow.id,
+          data: {
+            title: anyRow.title || '',
+            director: anyRow.director || '',
+            ...(seasons && { seasons }),
+            genre: anyRow.genre || 'General',
+            status: 'currentlyWatching',
+            startDate: today,
+          },
+        }),
+      };
+    }
+
+    if (entity.resource === 'shows' && anyRow.status === 'currentlyWatching') {
+      const seasons = getNumber(anyRow.seasons);
+
+      return {
+        label: 'Finish Watching',
+        onClick: () => updateMutation.mutate({
+          id: anyRow.id,
+          data: {
+            title: anyRow.title || '',
+            director: anyRow.director || '',
+            ...(seasons && { seasons }),
+            genre: anyRow.genre || 'General',
+            status: 'watched',
+            endDate: today,
+          },
+        }),
+      };
+    }
+
+    if (entity.resource === 'books' && anyRow.status === 'toRead') {
+      const pages = getNumber(anyRow.pages);
+
+      return {
+        label: 'Start Book',
+        onClick: () => updateMutation.mutate({
+          id: anyRow.id,
+          data: {
+            title: anyRow.title || '',
+            author: anyRow.author || '',
+            ...(pages && { pages }),
+            genre: anyRow.genre || 'General',
+            status: 'currentlyReading',
+            startDate: today,
+          },
+        }),
+      };
+    }
+
+    if (entity.resource === 'books' && anyRow.status === 'currentlyReading') {
+      const pages = getNumber(anyRow.pages);
+
+      return {
+        label: 'Finish Book',
+        onClick: () => updateMutation.mutate({
+          id: anyRow.id,
+          data: {
+            title: anyRow.title || '',
+            author: anyRow.author || '',
+            ...(pages && { pages }),
+            genre: anyRow.genre || 'General',
+            status: 'read',
+            endDate: today,
+          },
+        }),
+      };
+    }
+
+    return null;
   };
 
   // Build columns with special rendering for genre, status, date
@@ -131,13 +257,14 @@ export function ListPageLayout<T extends Record<string, any>>({
         onSearchChange={setSearch}
         config={entity as any}
         onAddClick={handleAddClick}
+        isAuthenticated={auth.isAuthenticated}
       />
 
       <div className="flex-1 p-4 sm:p-8 space-y-5 max-w-[1400px] w-full">
         {/* Filters and Sort */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between flex-wrap gap-3">
           <FilterPills
-            options={entity.statusFilters}
+            options={statusFiltersWithCurrentYear}
             active={statusFilter}
             onChange={setStatusFilter}
           />
@@ -159,6 +286,7 @@ export function ListPageLayout<T extends Record<string, any>>({
                     <RowActionsMenu
                       onEdit={() => handleEditClick(row as T)}
                       onDelete={() => handleDeleteClick(row as T)}
+                      quickAction={getQuickAction(row as T)}
                     />
                   )
                 : undefined

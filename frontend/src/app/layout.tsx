@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Playfair_Display } from 'next/font/google';
+import { Geist, Fraunces } from 'next/font/google';
 import { Providers } from './providers';
 import './globals.css';
 
@@ -8,10 +8,11 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-const playfair = Playfair_Display({
-  variable: '--font-playfair',
+const fraunces = Fraunces({
+  variable: '--font-logo',
   subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: '600',
+  style: ['italic'],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${playfair.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>

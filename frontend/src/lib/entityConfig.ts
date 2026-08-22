@@ -26,6 +26,8 @@ export interface EntityConfig<T> {
   statusLabels: Record<string, string>;
   columns: ColumnDef<T>[];
   formFields: FormField[];
+  /** Status new items are created with — everything starts on the backlog. */
+  defaultCreateStatus: string;
   sortOptions: Array<{ value: string; label: string }>;
 }
 
@@ -39,6 +41,7 @@ export const movieConfig: EntityConfig<Movie> = {
     { value: 'all', label: 'All' },
     { value: 'currentlyWatching', label: 'Watching' },
     { value: 'watchlist', label: 'TBW' },
+    { value: 'thisYear', label: 'This Year' },
     { value: 'watched', label: 'Completed' },
   ],
   statusLabels: MOVIE_STATUS_LABELS,
@@ -89,6 +92,7 @@ export const movieConfig: EntityConfig<Movie> = {
     { name: 'startDate', label: 'Start Date', type: 'date' },
     { name: 'endDate', label: 'End Date', type: 'date' },
   ],
+  defaultCreateStatus: 'watchlist',
   sortOptions: [
     { value: 'recent', label: 'Recently updated' },
     { value: 'titleAsc', label: 'Title (A–Z)' },
@@ -106,6 +110,7 @@ export const bookConfig: EntityConfig<Book> = {
     { value: 'all', label: 'All' },
     { value: 'currentlyReading', label: 'Reading' },
     { value: 'toRead', label: 'TBR' },
+    { value: 'thisYear', label: 'This Year' },
     { value: 'read', label: 'Completed' },
   ],
   statusLabels: BOOK_STATUS_LABELS,
@@ -156,6 +161,7 @@ export const bookConfig: EntityConfig<Book> = {
     { name: 'startDate', label: 'Start Date', type: 'date' },
     { name: 'endDate', label: 'End Date', type: 'date' },
   ],
+  defaultCreateStatus: 'toRead',
   sortOptions: [
     { value: 'recent', label: 'Recently updated' },
     { value: 'titleAsc', label: 'Title (A–Z)' },
@@ -173,6 +179,7 @@ export const showConfig: EntityConfig<Show> = {
     { value: 'all', label: 'All' },
     { value: 'currentlyWatching', label: 'Watching' },
     { value: 'watchlist', label: 'TBW' },
+    { value: 'thisYear', label: 'This Year' },
     { value: 'watched', label: 'Completed' },
   ],
   statusLabels: SHOW_STATUS_LABELS,
@@ -223,6 +230,7 @@ export const showConfig: EntityConfig<Show> = {
     { name: 'startDate', label: 'Start Date', type: 'date' },
     { name: 'endDate', label: 'End Date', type: 'date' },
   ],
+  defaultCreateStatus: 'watchlist',
   sortOptions: [
     { value: 'recent', label: 'Recently updated' },
     { value: 'titleAsc', label: 'Title (A–Z)' },

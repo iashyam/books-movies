@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { useEntityList } from '@/lib/queries';
 import { MY_LISTS } from '@/lib/constants';
 import { Movie, Book } from '@/types/models';
+import { AccountSection } from './AccountSection';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -57,7 +58,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       >
         {/* Logo */}
         <div className="px-7 py-7 flex items-center justify-between">
-          <h1 className="font-serif text-2xl text-foreground tracking-tight">shelf.</h1>
+          <h1 className="font-logo text-4xl text-foreground">Shelf.</h1>
           <button
             onClick={onClose}
             className="md:hidden p-1.5 text-muted hover:text-foreground rounded-lg transition-colors"
@@ -106,8 +107,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
         </div>
 
+        {/* Account */}
+        <div className="px-4 pt-3 border-t border-border">
+          <AccountSection />
+        </div>
+
         {/* Settings */}
-        <div className="px-4 py-4 border-t border-border">
+        <div className="px-4 pb-4">
           <Link
             href="/settings"
             onClick={onClose}
