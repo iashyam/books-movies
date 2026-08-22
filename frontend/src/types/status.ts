@@ -1,7 +1,7 @@
 import { MovieStatus, BookStatus, ShowStatus } from './models';
 
 export const MOVIE_STATUS_LABELS: Record<MovieStatus, string> = {
-  watchlist: 'To be Watched',
+  watchlist: 'TBW',
   currentlyWatching: 'Watching',
   watched: 'Completed',
 };
@@ -13,7 +13,7 @@ export const MOVIE_STATUS_COLORS: Record<MovieStatus, { bg: string; text: string
 };
 
 export const BOOK_STATUS_LABELS: Record<BookStatus, string> = {
-  toRead: 'To be Read',
+  toRead: 'TBR',
   currentlyReading: 'Reading',
   read: 'Completed',
 };
@@ -25,7 +25,7 @@ export const BOOK_STATUS_COLORS: Record<BookStatus, { bg: string; text: string }
 };
 
 export const SHOW_STATUS_LABELS: Record<ShowStatus, string> = {
-  watchlist: 'To be Watched',
+  watchlist: 'TBW',
   currentlyWatching: 'Watching',
   watched: 'Completed',
 };

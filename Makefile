@@ -20,7 +20,7 @@ dev:
 	$(MAKE) -j2 dev-backend dev-frontend
 
 dev-backend:
-	go run .
+	cd backend && go run .
 
 dev-frontend:
 	cd frontend && yarn dev
@@ -28,7 +28,7 @@ dev-frontend:
 build: build-backend build-frontend
 
 build-backend:
-	go build -o books-movies .
+	cd backend && go build -o books-movies .
 
 build-frontend:
 	cd frontend && yarn build
@@ -39,8 +39,8 @@ lint-frontend:
 	cd frontend && yarn lint
 
 fmt:
-	go fmt ./...
+	cd backend && go fmt ./...
 
 clean:
-	rm -f books-movies
+	rm -f backend/books-movies
 	rm -rf frontend/.next

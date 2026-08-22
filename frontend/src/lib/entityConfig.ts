@@ -38,7 +38,7 @@ export const movieConfig: EntityConfig<Movie> = {
   statusFilters: [
     { value: 'all', label: 'All' },
     { value: 'currentlyWatching', label: 'Watching' },
-    { value: 'watchlist', label: 'To be Watched' },
+    { value: 'watchlist', label: 'TBW' },
     { value: 'watched', label: 'Completed' },
   ],
   statusLabels: MOVIE_STATUS_LABELS,
@@ -105,7 +105,7 @@ export const bookConfig: EntityConfig<Book> = {
   statusFilters: [
     { value: 'all', label: 'All' },
     { value: 'currentlyReading', label: 'Reading' },
-    { value: 'toRead', label: 'To be Read' },
+    { value: 'toRead', label: 'TBR' },
     { value: 'read', label: 'Completed' },
   ],
   statusLabels: BOOK_STATUS_LABELS,
@@ -172,7 +172,7 @@ export const showConfig: EntityConfig<Show> = {
   statusFilters: [
     { value: 'all', label: 'All' },
     { value: 'currentlyWatching', label: 'Watching' },
-    { value: 'watchlist', label: 'To be Watched' },
+    { value: 'watchlist', label: 'TBW' },
     { value: 'watched', label: 'Completed' },
   ],
   statusLabels: SHOW_STATUS_LABELS,

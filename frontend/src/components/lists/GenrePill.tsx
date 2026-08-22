@@ -1,4 +1,4 @@
-import { Genre, GENRE_LABELS, GENRE_COLORS } from '@/types/genre';
+import { Genre, GENRE_LABELS } from '@/types/genre';
 
 interface GenrePillProps {
   genre: Genre;
@@ -6,11 +6,6 @@ interface GenrePillProps {
 
 export function GenrePill({ genre }: GenrePillProps) {
   const label = GENRE_LABELS[genre];
-  const colors = GENRE_COLORS[genre];
 
-  return (
-    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${colors.bg} ${colors.text}`}>
-      {label}
-    </span>
-  );
+  return <span className="text-sm text-muted">{label}</span>;
 }

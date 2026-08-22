@@ -23,38 +23,39 @@ export function TopBar<T>({
   const [showAvatar, setShowAvatar] = useState(false);
 
   return (
-    <div className="flex items-center justify-between px-8 py-6 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 px-4 sm:px-8 py-5 md:py-6 border-b border-border bg-surface">
       {/* Left: Title and Search */}
-      <div className="flex-1">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{title}</h2>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8 flex-1 min-w-0">
+        <h2 className="text-xl md:text-2xl font-semibold text-foreground tracking-tight shrink-0">{title}</h2>
+        <div className="relative w-full sm:max-w-sm">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" size={16} />
           <input
             type="text"
             placeholder={config.searchPlaceholder}
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full max-w-md pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-white"
+            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-border bg-background text-sm text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-shadow"
           />
         </div>
       </div>
 
       {/* Right: Add Button and Avatar */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 shrink-0">
         <button
           onClick={onAddClick}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-medium text-sm hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 px-4 py-2.5 bg-accent text-accent-foreground rounded-full font-medium text-sm hover:opacity-90 active:scale-[0.98] transition-all shadow-sm whitespace-nowrap"
         >
-          <Plus size={18} />
-          Add {config.singularLabel}
+          <Plus size={16} strokeWidth={2.5} />
+          <span className="hidden sm:inline">Add {config.singularLabel}</span>
+          <span className="sm:hidden">Add</span>
         </button>
 
         <div className="relative">
           <button
             onClick={() => setShowAvatar(!showAvatar)}
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-full border border-border text-muted hover:text-foreground hover:border-foreground/30 transition-colors shrink-0"
           >
-            <User size={20} />
+            <User size={17} />
           </button>
 
           {showAvatar && (

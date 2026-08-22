@@ -108,16 +108,23 @@ export function ListPageLayout<T extends Record<string, any>>({
       if (col.key === 'endDate') {
         return formatDate((row as any).endDate);
       }
+      if (col.key === 'title') {
+        return <span className="font-medium text-foreground">{(row as any).title}</span>;
+      }
       return col.render(row);
     },
   }));
 
   if (isLoading) {
-    return <div className="p-8 text-center">Loading...</div>;
+    return (
+      <div className="flex-1 flex items-center justify-center text-muted text-sm">
+        Loading…
+      </div>
+    );
   }
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col overflow-y-auto">
       <TopBar
         title={entity.navLabel}
         searchValue={search}
@@ -126,9 +133,9 @@ export function ListPageLayout<T extends Record<string, any>>({
         onAddClick={handleAddClick}
       />
 
-      <div className="flex-1 p-8 space-y-6">
+      <div className="flex-1 p-4 sm:p-8 space-y-5 max-w-[1400px] w-full">
         {/* Filters and Sort */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between flex-wrap gap-3">
           <FilterPills
             options={entity.statusFilters}
             active={statusFilter}
@@ -198,12 +205,12 @@ function getStatusColors(
   status: string
 ): { bg: string; text: string } {
   const colors: Record<string, { bg: string; text: string }> = {
-    watchlist: { bg: 'bg-gray-100', text: 'text-gray-700' },
-    toRead: { bg: 'bg-gray-100', text: 'text-gray-700' },
-    currentlyWatching: { bg: 'bg-amber-100', text: 'text-amber-700' },
-    currentlyReading: { bg: 'bg-amber-100', text: 'text-amber-700' },
-    watched: { bg: 'bg-green-100', text: 'text-green-700' },
-    read: { bg: 'bg-green-100', text: 'text-green-700' },
+    watchlist: { bg: 'bg-slate-100 dark:bg-slate-800', text: 'text-slate-600 dark:text-slate-300' },
+    toRead: { bg: 'bg-slate-100 dark:bg-slate-800', text: 'text-slate-600 dark:text-slate-300' },
+    currentlyWatching: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-400' },
+    currentlyReading: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-400' },
+    watched: { bg: 'bg-emerald-100 dark:bg-emerald-900/40', text: 'text-emerald-700 dark:text-emerald-400' },
+    read: { bg: 'bg-emerald-100 dark:bg-emerald-900/40', text: 'text-emerald-700 dark:text-emerald-400' },
   };
-  return colors[status] || { bg: 'bg-gray-100', text: 'text-gray-700' };
+  return colors[status] || { bg: 'bg-slate-100', text: 'text-slate-600' };
 }

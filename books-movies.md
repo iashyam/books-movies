@@ -1,0 +1,190 @@
+---
+layout: page
+permalink: /books-movies/
+---
+
+Here is a list of all the books and movies I have read and watched starting from April 2025. 
+
+Books 
+----
+- The Happy Prince by Oscar Wilde. 
+- The Idiot by Fyodor Dostoevsky (left unfinished)
+- The Prisoner of Birth by Jeffery Archer(May 17, 2025)
+- Little Women by Louisa May Alcott (June 1, 2025)
+- The Greatest Show on Earth by Richard Dawkins
+- Verity by Colleen Hoover (Aug 23, 2025)
+- The Secret History by Donna Tartt.
+(2026)
+- Pride and Prejudice
+- Down And Out in Paris And London by George Orwell
+- Animal Farm 
+- 1984
+- Aunts Aren't Gentlemen by PG Wodehouse
+- Project Hail Mary
+- Gone Girl
+- Oliver Twist by Charles Dickens 
+- The Hobbit
+
+Movies 
+----
+- The Storyteller (Sun, April 16, 2025)
+- How To Lose A Guy In 10 Days (Fri, April 19, 2025)
+- You Before Me (Wed, April 24, 2025)
+- Lost In Translation (Thu, April 25, 2025)
+- Jab Harry Met Sejal (Fri, April 26, 2025)
+- Dear Zindagi (Sat, April 27, 2025)
+- Jab Tak Hai Jaan (Sun, April 28, 2025)
+- Yeh Jawaani Hai Deewani (Wed, April 30, 2025)
+- Inglourious Basterds (Thu, May 1, 2025)
+- Thunderbolts* (Sat, May 3, 2025)
+- Notting Hill (Sun, May 4, 2025)
+- Along Came Polly (Sun, May 4, 2025)
+- Jerry Maguire (Tue, May 17, 2025)
+- The Truman Show (May 25, 2025)
+- Captain America: Brave New World (June 6, 2025)
+- Drishyam 2 (7, June 2025)
+- Invention Of Lying (June 14, 2025)
+- A Complete Unknown (Jun 15, 2025)
+- How To Train Your Dragon(2025) (June 22, 2025)
+- How To Train Your Dragon(2010) (June 22, 2025)
+- Ted 2 (June 27, 2025)
+- La La Land (June 28, 2025)
+- Fight Club (July 05, 2025)
+- Superman (July 13, 2025)
+- Shutter Island (July 19, 2025)
+- Batman Begins (July 20, 2025)
+- Fantastic Four (2005) (Aug 1, 2025)
+- Fantastic Four: Rise of Silver Surfer (Aug 1, 2025)
+- The Dark Knight (Aug 2, 2025)
+- Forrest Gump (Aug 3, 2025)
+- Tumse Na Ho Payega (Aug 9, 2025)
+- 500 Days of Summer (Aug 10, 2025)
+- The Dark Knight Rises (Aug 10, 2025)
+- Your Name (Aug 15, 2025)
+- Never Back Down (Aug 16, 2025)
+- Lal Singh Chadda (Aug 23, 2025)
+- Wall-E (Aug 28, 2025)
+- Kingsman: The Secret Service (Sep 6, 2025)
+- Kingsman: The Golden Circle (Sep 6, 2025)
+- King's man (Sep 6, 2025)
+- Nobody (Sep 6, 2025)
+- Oppenheimer (Sep 7, 2025)
+- Punjab 1984 (Sep 13, 2025)
+- Sajjan Singh Rangroot (Sep 13, 2025)
+- Rise of the Planet of Apes (Sep 23, 2025)
+- Despicable Me (Oct 1, 2025)
+- Chhichhore (Oct 20, 2025)
+- Fantastic Four: The First Steps (Nov 9, 2025)
+- Laila Majnun 
+- The Life List
+- The Holiday
+- A Beautiful Mind
+- Materialists
+- Jolly LLB 3
+- Coolie: The Powerhouse
+- Dhurandhar
+- Pride & Prejudice
+- Meenakshi-Sundareshwar
+- Tune In Love
+- Project Hail Mary
+- Dhurander 2
+- Justice League (Snyder Cut)
+- Main Wapis Aaunga. 
+- Gladiator 2
+- The Odyssey
+- Spiderman: Brand New Day
+- THe Prestige
+- Tenet
+- Zodiac 
+
+TBW:
+- Chris Nolan
+  - The Prestige (9, Aug 2026)
+  - Tennet
+  - Interstaller. 
+  - The Martian 
+  - Inception
+- Steven Spilberg Movies
+  - Jurassic Park
+  - Schindler's List
+  - Saving Private Ryan
+  - War of the Worlds
+  - West Side Story
+  - Disclosre Day
+  - Twilight Zone 
+  - ET: 
+  - Close Encounters with the third kind
+  - Minority Report
+  - Catch me if you can 
+  - The Fablemens
+  - The Bridge of Spies
+  - The Post
+  - AI: Artifical Intelligene 
+- David Fincher
+  - Seven
+  - Zodiac
+  - The Social Network
+  - The girl with dragon tatoo 
+  - The Curious case of Benjamin Button
+- The Shawshank Redemption
+- The Godfather series
+- Lord of the rings series
+- 12 Angry Men
+- Pulp Fiction
+- The Silence of the lambs
+- The pianist
+- One battle after another
+- Django unchained
+- Once upon a time in hollywood
+- Good will hunting
+- Arrival
+- Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb
+- Lawrence of Arabia
+- 2001: A Space Odyssey
+- No Country for Old Men
+- A time to kill
+- Monty Python and the Holy Grail
+- Chinatown
+- Dead Poets Society
+- The Wild Robot
+- Million Dollar Baby
+- Her
+- The Wizard of Oz
+- Parasite
+- The Good bad and the ugly
+- About time
+- Seven Samurai
+- Grave of the Fireflies
+- Demolition
+- The rainmaker
+- The Usual Suspects
+- Apocalypse Now
+- A moment to remember
+- Love actually
+
+
+
+
+Shows
+---
+- Silicon Valley  (April 11, 2025)
+- Suits (Season 7) (Aug 1, 2025)
+- American Manhunt: Osama Bin Laden (May 21, 2025)
+- Emily in Paris (S1E8)
+- Family Guy (S19)
+- Peacemaker (S2)
+- Georgie and Mandy's First Marriage (S1E19)
+- Our Beloved Summer
+- The Big Bang Theory
+- Breaking Bad
+- Game of Thrones
+- How i met your mother
+
+Podcasts
+---
+- The Rest Is Science [link](https://www.youtube.com/@TheRestIsScience)
+- Urdunama hosted by Fabiha Sayed [link](https://open.spotify.com/show/6zRRY9ssHgiH2Rm0IUrd5x)
+- Lex Fridman Podcast (Lex Fridman) [link](https://lexfridman.com/podcast/)
+- Within Reason Podcast (By Alex O'Connor) [link](https://open.spotify.com/show/16wUbvDT95dxzpG2KEhakK)
+- Huberman Lab Podcast (By Andrew Huberman) [link](https://www.hubermanlab.com/all-episodes)
+- StarTalk Radio (By Neil deGrasse Tyson) [link](https://www.youtube.com/@StarTalk)

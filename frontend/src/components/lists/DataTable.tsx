@@ -16,34 +16,35 @@ export function DataTable<T extends { id: string }>({
   onRowAction,
 }: DataTableProps<T>) {
   return (
-    <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-lg">
-      <table className="w-full">
+    <div className="overflow-x-auto border border-border rounded-2xl bg-surface shadow-sm">
+      <table className="w-full border-collapse">
         <thead>
-          <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-            {rowNumber && <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400">#</th>}
+          <tr className="border-b border-border">
+            {rowNumber && (
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-muted uppercase tracking-wider w-12">
+                #
+              </th>
+            )}
             {columns.map((col, idx) => (
               <th
                 key={idx}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap"
+                className="px-6 py-3.5 text-left text-xs font-semibold text-muted uppercase tracking-wider whitespace-nowrap"
                 style={{ width: col.width }}
               >
                 {col.header}
               </th>
             ))}
-            {onRowAction && <th className="px-6 py-3 w-10"></th>}
+            {onRowAction && <th className="px-6 py-3.5 w-10"></th>}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-border">
           {rows.map((row, rowIdx) => (
-            <tr
-              key={row.id}
-              className="border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-            >
+            <tr key={row.id} className="hover:bg-background/60 transition-colors">
               {rowNumber && (
-                <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{rowIdx + 1}</td>
+                <td className="px-6 py-4 text-sm text-muted">{rowIdx + 1}</td>
               )}
               {columns.map((col, colIdx) => (
-                <td key={colIdx} className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                <td key={colIdx} className="px-6 py-4 text-sm text-foreground">
                   {col.render(row)}
                 </td>
               ))}
@@ -53,7 +54,7 @@ export function DataTable<T extends { id: string }>({
         </tbody>
       </table>
       {rows.length === 0 && (
-        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+        <div className="text-center py-16 text-muted text-sm">
           No items found
         </div>
       )}

@@ -8,11 +8,10 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func getCORSConfig() cors.Config {
-	godotenv.Load()
+	LoadRootEnv()
 	allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
 	origins := strings.Split(allowedOrigins, ",")
 	for i := range origins {

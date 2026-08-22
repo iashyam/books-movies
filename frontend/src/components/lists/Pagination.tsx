@@ -12,13 +12,13 @@ interface PaginationProps {
 
 export function Pagination({ page, pageSize, total, onPageChange }: PaginationProps) {
   const totalPages = Math.ceil(total / pageSize);
-  const start = (page - 1) * pageSize + 1;
+  const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const end = Math.min(page * pageSize, total);
 
   if (totalPages <= 1) {
     return (
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-sm text-muted">
           {start}–{end} of {total}
         </span>
       </div>
@@ -55,19 +55,19 @@ export function Pagination({ page, pageSize, total, onPageChange }: PaginationPr
   }
 
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm text-gray-600 dark:text-gray-400">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <span className="text-sm text-muted">
         {start}–{end} of {total}
       </span>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 overflow-x-auto">
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
           className={clsx(
             'p-2 rounded-lg transition-colors',
             page === 1
-              ? 'text-gray-300 cursor-not-allowed dark:text-gray-700'
-              : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+              ? 'text-muted/40 cursor-not-allowed'
+              : 'text-muted hover:bg-background hover:text-foreground'
           )}
         >
           <ChevronLeft size={18} />
@@ -75,7 +75,7 @@ export function Pagination({ page, pageSize, total, onPageChange }: PaginationPr
 
         {pages.map((p, idx) =>
           p === '...' ? (
-            <span key={`ellipsis-${idx}`} className="px-2 text-gray-600 dark:text-gray-400">
+            <span key={`ellipsis-${idx}`} className="px-2 text-muted">
               …
             </span>
           ) : (
@@ -83,10 +83,10 @@ export function Pagination({ page, pageSize, total, onPageChange }: PaginationPr
               key={p}
               onClick={() => onPageChange(p as number)}
               className={clsx(
-                'min-w-10 h-10 rounded-lg font-medium text-sm transition-colors',
+                'min-w-9 h-9 rounded-lg font-medium text-sm transition-colors',
                 page === p
-                  ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-muted hover:bg-background hover:text-foreground'
               )}
             >
               {p}
@@ -100,8 +100,8 @@ export function Pagination({ page, pageSize, total, onPageChange }: PaginationPr
           className={clsx(
             'p-2 rounded-lg transition-colors',
             page === totalPages
-              ? 'text-gray-300 cursor-not-allowed dark:text-gray-700'
-              : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+              ? 'text-muted/40 cursor-not-allowed'
+              : 'text-muted hover:bg-background hover:text-foreground'
           )}
         >
           <ChevronRight size={18} />

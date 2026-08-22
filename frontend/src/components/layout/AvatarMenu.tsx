@@ -47,8 +47,8 @@ export function AvatarMenu({ onClose }: AvatarMenuProps) {
 
   if (auth.isAuthenticated) {
     return (
-      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 z-40">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Logged in as admin</p>
+      <div className="absolute right-0 mt-2 w-52 bg-surface border border-border rounded-xl shadow-lg p-4 z-40">
+        <p className="text-sm text-muted mb-3">Logged in as admin</p>
         <button
           onClick={handleLogout}
           disabled={logoutMutation.isPending}
@@ -62,8 +62,8 @@ export function AvatarMenu({ onClose }: AvatarMenuProps) {
 
   if (showPassword) {
     return (
-      <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 z-40">
-        <p className="text-sm font-medium text-gray-900 dark:text-white mb-3">Admin Password</p>
+      <div className="absolute right-0 mt-2 w-60 bg-surface border border-border rounded-xl shadow-lg p-4 z-40">
+        <p className="text-sm font-medium text-foreground mb-3">Admin Password</p>
         <input
           type="password"
           value={password}
@@ -71,14 +71,14 @@ export function AvatarMenu({ onClose }: AvatarMenuProps) {
           onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
           placeholder="Enter password"
           autoFocus
-          className="w-full px-3 py-2 mb-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className="w-full px-3 py-2 mb-3 border border-border rounded-lg bg-background text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent/20"
         />
         {error && <p className="text-sm text-red-600 dark:text-red-400 mb-3">{error}</p>}
         <div className="flex gap-2">
           <button
             onClick={handleLogin}
             disabled={loginMutation.isPending || !password}
-            className="flex-1 px-3 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium text-sm hover:opacity-90 disabled:opacity-50 transition-opacity"
+            className="flex-1 px-3 py-2 bg-accent text-accent-foreground rounded-lg font-medium text-sm hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
             {loginMutation.isPending ? '...' : 'Login'}
           </button>
@@ -88,7 +88,7 @@ export function AvatarMenu({ onClose }: AvatarMenuProps) {
               setPassword('');
               setError('');
             }}
-            className="flex-1 px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="flex-1 px-3 py-2 bg-background text-foreground rounded-lg font-medium text-sm hover:bg-border/40 transition-colors"
           >
             Cancel
           </button>
@@ -98,10 +98,10 @@ export function AvatarMenu({ onClose }: AvatarMenuProps) {
   }
 
   return (
-    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 z-40">
+    <div className="absolute right-0 mt-2 w-48 bg-surface border border-border rounded-xl shadow-lg p-3 z-40">
       <button
         onClick={() => setShowPassword(true)}
-        className="w-full px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium text-sm hover:opacity-90 transition-opacity"
+        className="w-full px-4 py-2 bg-accent text-accent-foreground rounded-lg font-medium text-sm hover:opacity-90 transition-opacity"
       >
         Login
       </button>

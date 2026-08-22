@@ -9,7 +9,7 @@ interface StatusPillProps {
 
 export function StatusPill({ label, color }: StatusPillProps) {
   return (
-    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${color.bg} ${color.text}`}>
+    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${color.bg} ${color.text}`}>
       {label}
     </span>
   );
