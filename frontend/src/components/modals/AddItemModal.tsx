@@ -130,10 +130,11 @@ export function AddItemModal<T extends { id?: string }>({
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
   // New items always land on the backlog (TBW/TBR) — only ask for the basics.
+  // Dates get set automatically by quick actions (Start/Finish) as status changes.
   // Editing an existing item still exposes the full field set (genre, status, dates).
   const visibleFields = editItem
     ? config.formFields
-    : config.formFields.filter((field) => field.type === 'text' || field.type === 'number' || field.type === 'date');
+    : config.formFields.filter((field) => field.type === 'text' || field.type === 'number');
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-50 p-4">

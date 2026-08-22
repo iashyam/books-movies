@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Film, BookOpen, Tv, Settings, X } from 'lucide-react';
+import { Film, BookOpen, Tv, Settings, X, BarChart3 } from 'lucide-react';
 import clsx from 'clsx';
 import { useEntityList } from '@/lib/queries';
 import { MY_LISTS } from '@/lib/constants';
@@ -35,6 +35,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     { href: '/movies', icon: Film, label: 'Movies', active: pathname?.startsWith('/movies') },
     { href: '/books', icon: BookOpen, label: 'Books', active: pathname?.startsWith('/books') },
     { href: '/shows', icon: Tv, label: 'Shows', active: pathname?.startsWith('/shows') },
+    { href: '/stats', icon: BarChart3, label: 'Stats', active: pathname?.startsWith('/stats') },
   ];
 
   return (

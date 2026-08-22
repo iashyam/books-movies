@@ -170,15 +170,15 @@ Shows
 - Silicon Valley  (April 11, 2025)
 - Suits (Season 7) (Aug 1, 2025)
 - American Manhunt: Osama Bin Laden (May 21, 2025)
-- Emily in Paris (S1E8)
-- Family Guy (S19)
-- Peacemaker (S2)
-- Georgie and Mandy's First Marriage (S1E19)
-- Our Beloved Summer
-- The Big Bang Theory
-- Breaking Bad
-- Game of Thrones
-- How i met your mother
+- Emily in Paris (2025)
+- Family Guy (2025)
+- Peacemaker (2025)
+- Georgie and Mandy's First Marriage (2026)
+- Our Beloved Summer(2026)
+- The Big Bang Theory(2026)
+- Breaking Bad(2026)
+- Game of Thrones(2026)
+- How i met your mother(2026)
 
 Podcasts
 ---

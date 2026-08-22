@@ -33,9 +33,20 @@ const nextConfig: NextConfig = {
   typescript: {
     tsconfigPath: './tsconfig.json',
   },
+  output: 'standalone',
   env: {
     NEXT_PUBLIC_API_BASE_URL:
       rootEnv.NEXT_PUBLIC_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL,
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/api/:path*',
+          destination: `${process.env.BACKEND_INTERNAL_URL || 'http://backend:8080'}/:path*`,
+        },
+      ],
+    };
   },
 };
 
