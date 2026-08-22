@@ -35,10 +35,9 @@ export function AddItemModal<T extends { id?: string }>({
             data[key] = value;
           }
         });
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing form state to the item being edited when the modal opens
         setFormData(data);
       } else {
-        // eslint-disable-next-line
         setFormData({});
       }
     }

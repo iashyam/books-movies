@@ -6,6 +6,7 @@ import { Film, BookOpen, Tv, Settings } from 'lucide-react';
 import clsx from 'clsx';
 import { useEntityList } from '@/lib/queries';
 import { MY_LISTS } from '@/lib/constants';
+import { Movie, Book } from '@/types/models';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -14,10 +15,12 @@ export function Sidebar() {
 
   const getMyListCount = (resource: string, status: string) => {
     if (resource === 'movies') {
-      return movies.filter((m) => m.status === status).length;
+      const typedMovies = (movies as Movie[]) || [];
+      return typedMovies.filter((m) => m.status === status).length;
     }
     if (resource === 'books') {
-      return books.filter((b) => b.status === status).length;
+      const typedBooks = (books as Book[]) || [];
+      return typedBooks.filter((b) => b.status === status).length;
     }
     return 0;
   };

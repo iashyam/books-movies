@@ -14,15 +14,13 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setTokenState] = useState<string | null>(null);
-  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Hydrate from localStorage on mount
+  // Hydrate from localStorage on mount (SSR/static render has no localStorage,
+  // so token starts null and updates once mounted in the browser)
   useEffect(() => {
     const stored = getToken();
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing React state from localStorage, unavailable during SSR/static render
     setTokenState(stored);
-    // eslint-disable-next-line
-    setIsHydrated(true);
   }, []);
 
   const login = (newToken: string) => {
@@ -34,11 +32,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearToken();
     setTokenState(null);
   };
-
-  // Don't render until we've checked localStorage
-  if (!isHydrated) {
-    return <>{children}</>;
-  }
 
   return (
     <AuthContext.Provider

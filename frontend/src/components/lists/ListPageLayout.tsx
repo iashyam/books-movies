@@ -1,5 +1,8 @@
 'use client';
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- generic table component spans
+   Movie/Book/Show, which share no common field set beyond id/title/status/genre/dates */
+
 import { useState, useMemo } from 'react';
 import { TopBar } from '@/components/layout/TopBar';
 import { FilterPills } from './FilterPills';
@@ -14,19 +17,21 @@ import { ConfirmDeleteModal } from '@/components/modals/ConfirmDeleteModal';
 import { useEntityList } from '@/lib/queries';
 import { useAuth } from '@/hooks/useAuth';
 import { PAGE_SIZE } from '@/lib/constants';
+import { Genre } from '@/types/genre';
 import { EntityConfig } from '@/lib/entityConfig';
 import { formatDate } from '@/lib/dates';
 import { sortByRecentActivity, sortByTitleAsc, sortByTitleDesc } from '@/lib/sort';
 
-interface ListPageLayoutProps<T extends { id: string; title: string; status: string; endDate: string; genre: string }> {
+interface ListPageLayoutProps<T> {
   entity: EntityConfig<T>;
 }
 
-export function ListPageLayout<T extends { id: string; title: string; status: string; endDate: string; genre: string }>({
+export function ListPageLayout<T extends Record<string, any>>({
   entity,
 }: ListPageLayoutProps<T>) {
   const auth = useAuth();
   const { data: items = [], isLoading } = useEntityList(entity.resource);
+  const typedItems = useMemo(() => (items as T[]) || [], [items]);
 
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -37,7 +42,7 @@ export function ListPageLayout<T extends { id: string; title: string; status: st
   const [deleteItem, setDeleteItem] = useState<{ id: string; title: string } | null>(null);
 
   const filtered = useMemo(() => {
-    let result = [...items];
+    let result = [...typedItems];
 
     // Status filter
     if (statusFilter !== 'all') {
@@ -52,15 +57,15 @@ export function ListPageLayout<T extends { id: string; title: string; status: st
 
     // Sort
     if (sort === 'recent') {
-      result = sortByRecentActivity(result);
+      result = sortByRecentActivity(result as any) as unknown as T[];
     } else if (sort === 'titleAsc') {
-      result = sortByTitleAsc(result);
+      result = sortByTitleAsc(result as any) as unknown as T[];
     } else if (sort === 'titleDesc') {
-      result = sortByTitleDesc(result);
+      result = sortByTitleDesc(result as any) as unknown as T[];
     }
 
     return result;
-  }, [items, statusFilter, search, sort]);
+  }, [typedItems, statusFilter, search, sort]);
 
   const paginatedItems = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
@@ -84,23 +89,24 @@ export function ListPageLayout<T extends { id: string; title: string; status: st
 
   const handleDeleteClick = (item: T) => {
     if (!auth.isAuthenticated) return;
-    setDeleteItem({ id: item.id, title: item.title });
+    const anyItem = item as any;
+    setDeleteItem({ id: anyItem.id, title: anyItem.title });
   };
 
   // Build columns with special rendering for genre, status, date
-  const columns = entity.columns.map((col) => ({
+  const columns = (entity.columns as any[]).map((col) => ({
     ...col,
     render: (row: T) => {
       if (col.key === 'genre') {
-        return <GenrePill genre={row.genre} />;
+        return <GenrePill genre={(row as any).genre as Genre} />;
       }
       if (col.key === 'status') {
-        const label = entity.statusLabels[row.status];
-        const statusColors = getStatusColors(entity.resource, row.status);
-        return <StatusPill status={row.status} label={label} color={statusColors} />;
+        const label = entity.statusLabels[(row as any).status];
+        const statusColors = getStatusColors(entity.resource, (row as any).status);
+        return <StatusPill status={(row as any).status} label={label} color={statusColors} />;
       }
       if (col.key === 'endDate') {
-        return formatDate(row.endDate);
+        return formatDate((row as any).endDate);
       }
       return col.render(row);
     },
@@ -116,7 +122,7 @@ export function ListPageLayout<T extends { id: string; title: string; status: st
         title={entity.navLabel}
         searchValue={search}
         onSearchChange={setSearch}
-        config={entity}
+        config={entity as any}
         onAddClick={handleAddClick}
       />
 
@@ -138,14 +144,14 @@ export function ListPageLayout<T extends { id: string; title: string; status: st
         {/* Table */}
         <div>
           <DataTable
-            columns={columns}
-            rows={paginatedItems}
+            columns={columns as any}
+            rows={paginatedItems as any}
             onRowAction={
               auth.isAuthenticated
-                ? (row) => (
+                ? (row: any) => (
                     <RowActionsMenu
-                      onEdit={() => handleEditClick(row)}
-                      onDelete={() => handleDeleteClick(row)}
+                      onEdit={() => handleEditClick(row as T)}
+                      onDelete={() => handleDeleteClick(row as T)}
                     />
                   )
                 : undefined
