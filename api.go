@@ -78,10 +78,9 @@ func setupRouter() *gin.Engine {
 	r.PATCH("/shows/:id", AuthMiddleware(), showHandler.Update())
 	r.PATCH("/shows/:id/status", AuthMiddleware(), showHandler.ChangeStatus())
 
-	// serve static files
-	r.Static("/static", "./")
+	// API root health check (frontend served separately)
 	r.GET("/", func(c *gin.Context) {
-		c.File("./index.html")
+		c.JSON(http.StatusOK, gin.H{"status": "ok", "service": "books-movies-api"})
 	})
 
 	return r
