@@ -8,7 +8,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-dvh bg-background">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col">
@@ -23,7 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <h1 className="font-logo text-lg text-foreground">Shyam's Shelf</h1>
         </div>
 
-        <main className="flex-1 flex flex-col overflow-y-auto">{children}</main>
+        <main className="flex-1 flex flex-col overflow-hidden">{children}</main>
       </div>
     </div>
   );

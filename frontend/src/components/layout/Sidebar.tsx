@@ -51,7 +51,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <aside
         className={clsx(
-          'w-64 bg-surface border-r border-border flex flex-col h-screen shrink-0',
+          'w-64 bg-surface border-r border-border flex flex-col h-dvh shrink-0',
           'fixed inset-y-0 left-0 z-50 transition-transform duration-200 ease-out',
           'md:static md:z-auto md:translate-x-0',
           isOpen ? 'translate-x-0' : '-translate-x-full'
