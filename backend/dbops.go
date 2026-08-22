@@ -20,9 +20,7 @@ var Client *mongo.Client
 var DB *mongo.Database
 
 func LoadDB(ctx context.Context) (*mongo.Database, error) {
-	if err := LoadRootEnv(); err != nil {
-		return nil, err
-	}
+	LoadRootEnv()
 
 	uri := os.Getenv("MONGODB_URI")
 	ctxc, cancel := context.WithTimeout(ctx, 10*time.Second)
