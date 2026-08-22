@@ -16,7 +16,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: 'shelf.',
+  title: "Shyam's Shelf",
   description: 'Track your books, movies, and shows',
 };
 

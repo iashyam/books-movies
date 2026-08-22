@@ -20,10 +20,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           >
             <Menu size={20} />
           </button>
-          <h1 className="font-logo text-2xl text-foreground">Shelf.</h1>
+          <h1 className="font-logo text-lg text-foreground">Shyam's Shelf</h1>
         </div>
 
-        <main className="flex-1 flex flex-col overflow-hidden">{children}</main>
+        <main className="flex-1 flex flex-col overflow-y-auto">{children}</main>
       </div>
     </div>
   );
